@@ -46,8 +46,8 @@ function AIPage() {
         formData.append('image', file);
         // formData.append('link', preview);
         // console.log(formData); 
-
-        const res = await fetch("http://localhost:8001/predict", {
+ 
+        const res = await fetch("https://qxai-fullstack-prj.onrender.com/predict", {
             method: 'POST',
             body: formData, 
         }); 
