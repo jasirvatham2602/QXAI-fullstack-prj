@@ -113,10 +113,7 @@ In the future, other Quantum Explainable AI techniques can be implemented to fur
 I would like to acknowledge all of the dependencies used in this passion project, such as PennyLane, PyTorch, Qiskit, matplotlib, seaborn, numpy, and more, as seen in the requirements.txt file. Pennylane was used to design the Variational Quantum Circuit of the QXAI architecture, and PyTorch was used for the classical AI parts. Other dependencies, such as numpy, matplotlib, and seaborn, were also used. Additionally, Qiskit was used to make the VQC diagram to help explain the QXAI architecture.
 Furthermore, I would also like to acknowledge the Kaggle dataset, which provided the MRI scans of AD, PD, and CONTROL below. Some MRI scans were removed due to noise.
 https://www.kaggle.com/datasets/farjanakabirsamanta/alzheimer-diseases-3-class
-=======
 
 # QXAI-fullstack-prj
 
 Fullstack Quantum Explainable Artificial Intelligence (QXAI) project that allows users to upload MRI scans and determine whether they’re classified as Alzheimer’s, Parkinson’s, or healthy control.
-
-> > > > > > > a1e51579ea16d251fb270b493fde8de38907900c
