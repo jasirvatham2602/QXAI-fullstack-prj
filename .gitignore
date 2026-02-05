@@ -1,3 +1,19 @@
+# Python
+venv/
+__pycache__/
+*.pyc
+
+# Node / React
+node_modules/
+dist/
+build/
+
+# Env
+.env
+.env.local
+
+# OS
+.DS_Store
 # Logs
 logs
 *.log
