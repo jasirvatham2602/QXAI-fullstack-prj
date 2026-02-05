@@ -118,5 +118,3 @@ https://www.kaggle.com/datasets/farjanakabirsamanta/alzheimer-diseases-3-class
 # QXAI-fullstack-prj
 
 Fullstack Quantum Explainable Artificial Intelligence (QXAI) project that allows users to upload MRI scans and determine whether they’re classified as Alzheimer’s, Parkinson’s, or healthy control.
-
-> > > > > > > a1e51579ea16d251fb270b493fde8de38907900c
