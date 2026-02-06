@@ -15,7 +15,8 @@ from sqlalchemy import Column, Integer, String
 
 app = FastAPI()
 origins = [
-    "http://localhost:5173"
+    # "http://localhost:5173"
+    "https://qxai-fullstack-prj.netlify.app"
 ]
 app.add_middleware(
     CORSMiddleware,
@@ -30,20 +31,24 @@ IMAGE_SIZE = 224
 # Quantum 
 N_QUBITS = 4 
 N_LAYERS = 4 
-dir = 'uploaded_images'
-try: 
-    os.mkdir(dir)
-except FileExistsError:
-    print(f'dir {dir} already exists')
-dir2 = 'saliency_maps'
-try: 
-    os.mkdir(dir2)
-except FileExistsError:
-    print(f'dir {dir2} already exists')
+# dir = 'uploaded_images'
+# try: 
+#     os.mkdir(dir)
+# except FileExistsError:
+#     print(f'dir {dir} already exists')
+# dir2 = 'saliency_maps'
+# try: 
+#     os.mkdir(dir2)
+# except FileExistsError:
+#     print(f'dir {dir2} already exists')
+UPLOAD_DIR = '/tmp/uploaded_images'
+SALIENCY_DIR = '/tmp/saliency_maps'
+os.makedirs(UPLOAD_DIR, exist_ok=True)
+os.makedirs(SALIENCY_DIR, exist_ok=True)
 app.mount(
-    f'/{dir2}', 
-    StaticFiles(directory=dir2), 
-    name=dir2
+    '/saliency_maps', 
+    StaticFiles(directory=SALIENCY_DIR), 
+    name='saliency_maps'
 )
 # Databases 
 # class User(Base):
@@ -147,12 +152,12 @@ base_transform = transforms.Compose([
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 xai_model = ClassicalCNN()
-xai_model.load_state_dict(torch.load('xai_model.pth', map_location=device))
+xai_model.load_state_dict(torch.load(os.path.join(os.path.dirname(__file__), 'xai_model.pth'), map_location=device))
 xai_model.to(device)
 xai_model.eval()
 
 qxai_model = QuantumHybrid().to(device)
-qxai_model.load_state_dict(torch.load('qxai_model.pth', map_location=device))
+qxai_model.load_state_dict(torch.load(os.path.join(os.path.dirname(__file__), 'qxai_model.pth'), map_location=device))
 qxai_model.eval()
 
 class_names = ['AD', 'CONTROL', 'PD']
@@ -232,11 +237,13 @@ def show_quantum_saliency(image, saliency, title="Quantum Saliency"):
 img_cm_cnt = 0
 def save_xai_qxai_saliency_map_comparison(image, c_sal, q_sal,
                         c_title="Classical XAI",
-                        q_title="Quantum XAI", dir='saliency_maps', file_name=None):
+                        q_title="Quantum XAI", dir=None, file_name=None):
     """
     image: (1, C, H, W)
     c_sal, q_sal: (1, H, W)
     """
+    if dir is None:
+        dir = SALIENCY_DIR
     global img_cm_cnt 
     img_cm_cnt += 1 
     print(f"global_img_cm_cnt {img_cm_cnt}")
@@ -280,8 +287,8 @@ def save_xai_qxai_saliency_map_comparison(image, c_sal, q_sal,
 @app.post('/predict')
 async def predict(image: UploadFile = File(...)):
     global xai_model
-    # upload Image to /uploaded_images 
-    file_location = os.path.join(dir, image.filename)
+    # upload Image to /tmp/uploaded_images 
+    file_location = os.path.join(UPLOAD_DIR, image.filename)
     try: 
         with open(file_location, "wb") as buffer: 
                 shutil.copyfileobj(image.file, buffer)
@@ -358,7 +365,7 @@ async def predict(image: UploadFile = File(...)):
         'q_label': q_label,
         'saliency_maps_path': saliency_maps_path, 
         'saliency_maps_path_real': os.path.realpath(saliency_maps_path), 
-        'saliency_map_url': f'http://localhost:8001/saliency_maps/{output_file_name}'
+        'saliency_map_url': f'/saliency_maps/{output_file_name}'
         
         # 'q_sal': q_sal.detach().cpu().numpy().tolist(),
     } 
@@ -385,4 +392,6 @@ def get_time():
 # def get_current_time():
 #     return {'time', time.time()} 
 #     # automatically JSONified by Flask.
-    
+if __name__ == '__main__':
+    import uvicorn
+    uvicorn.run(app, host='0.0.0.0', port=7860)
