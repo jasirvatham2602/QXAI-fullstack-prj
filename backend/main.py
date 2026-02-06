@@ -18,6 +18,7 @@ origins = [
     # "http://localhost:5173"
     "https://qxai-fullstack-prj.netlify.app"
 ]
+API_url = 'https://jasirvatham2602-qxai-backend-hugging-face.hf.space'
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
@@ -365,7 +366,7 @@ async def predict(image: UploadFile = File(...)):
         'q_label': q_label,
         'saliency_maps_path': saliency_maps_path, 
         'saliency_maps_path_real': os.path.realpath(saliency_maps_path), 
-        'saliency_map_url': f'/saliency_maps/{output_file_name}'
+        'saliency_map_url': f'{API_url}/saliency_maps/{output_file_name}'
         
         # 'q_sal': q_sal.detach().cpu().numpy().tolist(),
     } 
