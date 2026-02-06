@@ -6,6 +6,7 @@ function Home() {
     const [file, setFile] = useState(null); 
     const [res, setRes] = useState(null); 
     const [saliencyMapsPath, setSaliencyMapsPath] = useState(null); 
+    const [isChecked, setIsChecked] = useState(false); 
     // const onImageChange = (event) => {
     //     if (event.target.files && event.target.files[0]) {
     //         setImage(event.target.files[0]);
@@ -38,6 +39,10 @@ function Home() {
     } 
     let handleSubmit = async (event) => {
         event.preventDefault();  
+        if (!isChecked) {
+            alert('Please agree to the Terms and Conditions');
+            return; 
+        }
         if (!file) {
             alert("Please upload an image"); 
             return; 
@@ -65,8 +70,8 @@ function Home() {
                         <label htmlFor="exampleInputEmail1">XAI and QXAI detection</label>
                     </div> 
                     <div className="form-group form-check" style={{maxWidth: '200'}}>
-                        <input type="checkbox" className="form-check-input" id="exampleCheck1"/>
-                        <label className="form-check-label" htmlFor="exampleCheck1" style={{maxWidth: '200', overflowWrap: 'break-word', display: 'inline-block', width: '200'}} >I understand that models' ouptuts may be accurate and should not be used for clinical decision-making without assistance of a trained neurologist</label>
+                        <input type="checkbox" className="form-check-input" id="exampleCheck1" onChange={(e) => setIsChecked(e.target.value) }/>
+                        <label className="form-check-label" htmlFor="exampleCheck1" style={{maxWidth: '200', overflowWrap: 'break-word', display: 'inline-block', width: '200'}}>I understand that models' ouptuts may be accurate and should not be used for clinical decision-making without assistance of a trained neurologist</label>
                     </div>
                     <img id='preview' width="200" src="" alt="" /> <br />
                     <input type="file" onChange={previewImage}/>
