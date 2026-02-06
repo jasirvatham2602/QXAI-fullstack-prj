@@ -10,9 +10,9 @@ from PIL import Image
 import pennylane as qml
 import matplotlib.pyplot as plt
 from fastapi.staticfiles import StaticFiles 
-from sqlalchemy import Column, Integer, String 
+# from sqlalchemy import Column, Integer, String 
 # from database import Base 
-
+import uvicorn 
 app = FastAPI()
 origins = [
     # "http://localhost:5173"
@@ -377,21 +377,15 @@ def root():
     return {"status": "Backend is running"}
 
 
-@app.get('/time')
-def get_time():
-    return {"time": time.strftime("%Y-%m-%dT%H:%M:%S", time.localtime())}
-
-
-# @app.get('/api/time')
-# def get_api_time():
+# @app.get('/time')
+# def get_time():
 #     return {"time": time.strftime("%Y-%m-%dT%H:%M:%S", time.localtime())}
 
-# app = Flask(__name__)
 
-# @app.route('/time')
-# def get_current_time():
-#     return {'time', time.time()} 
-#     # automatically JSONified by Flask.
-if __name__ == '__main__':
-    import uvicorn
+# app = FastAPI() 
+# @app.get('/')
+# def root():
+#     return {'status':'ok'}
+ 
+if __name__ == '__main__': 
     uvicorn.run(app, host='0.0.0.0', port=7860)
