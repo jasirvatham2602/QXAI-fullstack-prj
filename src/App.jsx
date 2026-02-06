@@ -37,7 +37,7 @@ function App() {
   //   setTime(data.time) 
   // } ).catch((err) => console.log(err)), 1000);
   useEffect(() => {
-    fetch('http://localhost:8001/').then(res => res.json()).then((data) => setMessage(data.status)).catch((err) => console.log(err))
+    fetch('https://jasirvatham2602-qxai-backend-hugging-face.hf.space/').then(res => res.json()).then((data) => setMessage(data.status)).catch((err) => console.log(err))
   }, []); 
   return (
     <>

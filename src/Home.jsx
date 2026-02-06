@@ -47,7 +47,7 @@ function Home() {
         // formData.append('link', preview);
         // console.log(formData); 
 
-        const res = await fetch("http://localhost:8001/predict", {
+        const res = await fetch("https://jasirvatham2602-qxai-backend-hugging-face.hf.space/predict", {
             method: 'POST',
             body: formData, 
         }); 
